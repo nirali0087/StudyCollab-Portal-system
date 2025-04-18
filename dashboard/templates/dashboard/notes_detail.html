@@ -1,0 +1,68 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background-color: #4C516D;
+        font-family: 'cambria', sans-serif;
+      }
+    /* Overall container styling */
+    .container {
+        max-width: 900px; /* Set max-width for a better view on large screens */
+        margin: 80px auto; /* Center container */
+        padding: 30px; /* Add padding */
+        background-color: #b7b9c7; /* White background for contrast */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+    }
+
+    /* Header styling */
+    h2 {
+        font-size: 2.5rem; /* Increase font size for headings */
+        background-color: #b7b9c7;
+        color: black; /* Darker color for better readability */
+        font: bold 40px cambria;
+        margin-bottom: 10px; /* Spacing below the heading */
+    }
+
+    /* Description paragraph styling */
+    .description {
+        font-size: 1.2rem; /* Slightly larger font for description */
+        line-height: 1.5; /* Increase line height for better readability */
+        background-color: #b7b9c7 ; /* Darker color for better readability */
+        color: black; /* Lighter color for description text */
+    }
+
+    /* Horizontal rule styling */
+    hr {
+        border: 1px solid #b7b9c7; /* Light gray color for separator */
+        margin: 20px 0; /* Spacing above and below the hr */
+    }
+
+    /* Add responsive text centering */
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 2rem; /* Adjust heading size for smaller screens */
+        }
+
+        .description {
+            font-size: 1rem; /* Adjust description size for smaller screens */
+        }
+    }
+</style>
+
+<section class='text-center container'>
+    <div class="content-section p-0 mt-5">
+        <div class="m-3">
+            <h2>{{ notes.title }}</h2>
+        </div>
+        <hr class="p-0 m-0">
+        <p class="description m-5 p-5">
+            {{ notes.description }}
+        </p>
+        <hr>
+    </div>
+</section>
+
+{% endblock content %}

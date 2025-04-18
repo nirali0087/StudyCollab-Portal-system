@@ -1,0 +1,206 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<style>
+    body {
+        background-color: #4C516D;
+        font-family: Cambria, serif; /* Set font to Cambria */
+    }
+
+    /* Overall container styling */
+    .container {
+        padding: 40px;
+        background-color: #b7b9c7;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+    /* Form legend styling */
+    legend {
+        font-size: 1.5rem;
+        color: black;
+        font: bold 30px cambria;
+    }
+
+    /* Input and button styling */
+    .form-control, .form-select {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        transition: border-color 0.3s;
+        font: 18px cambria;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #80bdff;
+        
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    /* Button styling */
+    .btn-outline-info, .btn-warning, .btn-danger {
+        background-color: black;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border-color: black;
+        font: 15px cambria;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-outline-info:hover, .btn-warning:hover, .btn-danger:hover {
+        background-color: #4C516D;
+        color: white;
+    }
+
+    /* Change delete icon color */
+    .fa-trash {
+        color: red; /* Change delete icon to red */
+    }
+
+    /* Table styling */
+    .todo-table {
+        max-height: 400px; /* Set max height for table container */
+        overflow-y: auto;  /* Enable vertical scrolling */
+    }
+
+    .table {
+        background-color: #4C516D;
+        color: white;
+        margin-top: 20px;
+        font: 18px cambria;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+        color: white;
+    }
+
+    /* Table header styling */
+    thead {
+        background-color: #4C516D;
+        color: white;
+    }
+
+    .form-check-label {
+        color: black; /* Keep the text color white for both Completed and Not Completed */
+        font: bold 20px cambria;
+    }
+    
+    .form-check-input:checked {
+        background-color: black; /* Make the checkbox black when checked */
+        border-color: black;
+    }
+    
+    .form-check-input {
+        background-color: white; /* Set the default background color to white for unchecked state */
+        border-color: white; /* Set the border to white when unchecked */
+    }
+
+    /* Create Todo section styling */
+    .create-todo {
+        margin-top: 40px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="container">
+    <!-- Search Form -->
+    <form method="GET" class="mb-4">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Todo's</legend>
+            <input type="text" name="search" value="{{ request.GET.search }}" class="form-control mt-2" placeholder="Search by title">
+            <button class="btn btn-outline-info mt-2" type="submit">Search</button>
+        </fieldset>
+    </form>
+    
+    <!-- Filter Form -->
+    <form method="GET" class="mb-4">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Filter By Status and Date</legend>
+            <div class="row">
+                <div class="col-md-6">
+                    <select name="status" class="form-select" onchange="this.form.submit()">
+                        <option value="">All</option>
+                        <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Completed</option>
+                        <option value="not_completed" {% if request.GET.status == 'not_completed' %}selected{% endif %}>Not Completed</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <input type="date" name="date" class="form-control" value="{{ request.GET.date }}" onchange="this.form.submit()">
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    {% if not todos_done %}
+    <div class="todo-table">
+        <table class="table table-striped table-bordered table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in todos %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ todo.title }}</td>
+                    <td>
+                        <div class="form-check">
+                            <!-- Checkbox tick mark will show whether the task is completed or not -->
+                            <input class="form-check-input" type="checkbox" {% if todo.is_finished %}checked{% endif %} onclick="return false;">
+                            <label class="form-check-label1">
+                                {% if todo.is_finished %} Completed {% else %} Not Completed {% endif %}
+                            </label>
+                        </div>
+                    </td>
+                    <td><a href="{% url 'update-todo' todo.id %}" class="btn btn-warning btn-sm">Edit</a></td>
+                    <td><a href="#" onclick="confirmDelete({{ todo.id }})" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-2x"></i></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <h4>All tasks have been done! Create to add more.</h4>
+    {% endif %}
+</div><br><br>
+
+<div class="container create-todo">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Create Todo</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Create</button>
+        </div>
+    </form>
+</div>
+
+<!-- Confirmation Popup for Delete -->
+<script>
+function confirmDelete(todoId) {
+    if (confirm('Are you sure you want to delete this todo?')) {
+        window.location.href = '{% url "delete-todo" 0 %}'.replace('0', todoId);
+    }
+}
+</script>
+
+{% endblock content %}

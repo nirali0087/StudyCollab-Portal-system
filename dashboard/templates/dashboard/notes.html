@@ -1,0 +1,217 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>
+    body {
+        background-color: #4C516D;
+    }
+    /* Container styling */
+    .container {
+        max-width: 1200px;
+        margin: 80px auto;
+        padding: 30px;
+        background-color: #b7b9c7;
+        border-radius: 10px;
+        font: bold 20px cambria;
+        color: black;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Header styles */
+    h2 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    /* Search form styles */
+    .form-inline {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        padding: 10px;
+        border-radius: 5px;
+        margin-right: 10px;
+        border: 1px solid #ced4da;
+        transition: border 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .btn-outline-success,
+    .btn-outline-warning,
+    .btn-outline-primary {
+        border-radius: 5px;
+        background-color: black;
+        color: white;
+        transition: background-color 0.3s;
+    }
+
+    .btn-outline-success:hover,
+    .btn-outline-warning:hover,
+    .btn-outline-primary:hover {
+        background-color: #b7b9c7;
+        color: black;
+    }
+
+    /* Card styles */
+    .card {
+        margin-bottom: 20px;
+        border-radius: 8px;
+        transition: transform 0.2s;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background-color: #4C516D; /* Changed card color to #4C516D */
+        padding: 15px;
+    }
+
+    .card:hover {
+        background-color: #4C516D;
+        transform: scale(1.02);
+    }
+
+    .card-header {
+        background-color: #4C516D;
+        color: white;
+        font-weight: bold;
+        padding: 15px;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .card-body {
+        padding: 10px;
+        font-size: 1rem;
+        color: white; /* Ensuring text inside card is white for readability */
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .text-danger {
+        font-size: 1.5rem;
+    }
+
+    /* Create Notes form styling */
+    fieldset {
+        border: none;
+    }
+
+    .form-group {
+        margin-top: 20px;
+    }
+
+    .btn-outline-info {
+        border-radius: 5px;
+        background-color: black;
+        color: white;
+        transition: background-color 0.3s;
+    }
+
+    .btn-outline-info:hover {
+        background-color: #b7b9c7;
+        color: black;
+    }
+
+    /* Notes container with scrollbar */
+    .notes-container {
+        max-height: 400px; /* Set a max height */
+        overflow-y: auto; /* Enable vertical scrollbar */
+        padding-right: 15px; /* Add some padding to avoid content touching scrollbar */
+    }
+
+    /* Responsive layout for notes */
+    .row {
+        display: flex;
+        flex-wrap: wrap; /* Wrap notes to next line if they exceed the row width */
+        justify-content: flex-start;
+    }
+
+    .col-md-3 {
+        flex: 1 1 25%;
+        margin: 35px;
+    }
+
+    @media (max-width: 768px) {
+        .col-md-3 {
+            flex: 1 1 100%;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>Your Notes</h2>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <form method="GET" class="form-inline">
+                <input class="form-control" type="search" name="q" placeholder="Search Notes" aria-label="Search" value="{{ request.GET.q }}">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="notes-container">
+        <div class="row">
+            {% for note in notes %}
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        {{ note.title }}
+                        <a href="{% url 'edit-note' note.id %}" class="btn btn-outline-warning btn-sm">Edit</a>
+                    </div>
+                    <div class="card-body">
+                        {{ note.description|slice:"0:100" }}{% if note.description|length > 100 %}...{% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="text-danger" onclick="confirmDelete('{% url 'delete-note' note.id %}'); return false;">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        <a href="{% url 'notes-detail' note.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% if notes|length == 0 %}
+            <div class="col-md-12">
+                <div class="alert alert-info" role="alert">
+                    No notes available. Please create some notes!
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Create Notes</legend>
+        </fieldset>
+        {{ form|crispy }}
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">
+                Create
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+function confirmDelete(url) {
+    if (confirm("Are you sure you want to delete this note?")) {
+        window.location.href = url;
+    }
+}
+</script>
+
+{% endblock content %}

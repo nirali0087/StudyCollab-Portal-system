@@ -1,0 +1,139 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background-color: #4C516D;
+    }
+    /* Container styling */
+    .container {
+        max-width: 1200px;
+        margin: 30px auto;
+        background-color: #b7b9c7;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Section title */
+    h2 {
+        font-size: 2.5rem;
+        color: black;
+        font-weight: 700;
+        margin-bottom: 20px;
+        font: bold 40px cambria;
+    }
+
+    /* Search description */
+    p {
+        font-size: 1.2rem;
+        color: black;
+        font: 20px cambria;
+        margin-bottom: 10px;
+    }
+
+    b {
+        color: #dc3545;
+    }
+
+    /* Input styles */
+    .form-control {
+        padding: 12px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        margin-bottom: 2px;
+    }
+
+    .btn-danger {
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        background-color: black;
+        border-color: black;
+        transition: all 0.3s ease;
+    }
+
+    .btn-danger:hover {
+        background-color: #4C516D;
+        color: white;
+    }
+
+    /* Custom card styling */
+    .custom-header h2 {
+        font-size: 2rem;
+        color: black;
+        margin-top : 10px;
+        font-weight: bold cambria;
+    }
+
+    .custom-header h6 {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    /* Description box */
+    .description {
+        background-color: #f8f9fa;
+        border-left: 4px solid #4C516D;
+        border-right: 4px solid #4C516D;
+        padding: 20px;
+        font-size: 1.1rem;
+        color: black;
+        font: 20px cambria;
+        line-height: 1.6;
+        border-radius: 8px;
+    }
+
+    /* Styling for hr */
+    hr {
+        border: 1px solid #4C516D;
+        margin: 15px 0;
+    }
+
+    /* Responsive styling */
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+            margin: 40px auto;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        .description {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<section class='text-center container'>
+    <h2>Search articles on Wikipedia</h2>
+    <p>Just enter the search query to obtain the results</p><b>Enter without any space</b>
+    
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form}}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form><br>
+
+    <!-- Display results if available -->
+    <div class="container">
+        <div class="content-section p-0 mt-5">
+            <a href="{{link}}" class="p-0 m-0" target="_blank">
+                <div class="custom-header">
+                    <h2>{{title}}</h2>
+                    <h6>{{link}}</h6>
+                </div>
+            </a>
+            <hr>
+            <p class="description m-5 p-5">
+                {{details}}
+            </p>
+            <hr>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

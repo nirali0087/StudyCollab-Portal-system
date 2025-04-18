@@ -1,0 +1,94 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>
+  body {
+    background-color: #4C516D;
+}
+  /* Custom styles for the container */
+  .container {
+    max-width: 900px;
+    max-height: 860px;
+    margin: 10px auto;
+    padding: 30px;
+    background-color: #b7b9c7;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Legend styling */
+  legend {
+    font-size: 2rem;
+    font-weight: bold;
+    color: black;
+    font: bold 40px cambria;
+    margin-bottom: 20px;
+  }
+
+  /* Button style */
+  .btn-outline-info {
+    font-size: 1.1rem;
+    padding: 10px 25px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    Background-color: black;
+    color: white;
+    border-color: white;
+    font: 20px cambria;
+  }
+
+  .btn-outline-info:hover {
+    background-color: #4C516D;
+    color: #fff;
+  }
+
+  /* Input field styling */
+  .form-control {
+    padding: 12px 15px;
+    font-size: 1rem;
+    border-radius: 6px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+    font: bold 20px cambria;
+  }
+
+  /* Border for form */
+  fieldset {
+    padding: 20px;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 20px;
+      margin: 30px auto;
+    }
+
+    legend {
+      font-size: 1.6rem;
+    }
+  }
+
+</style>
+
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Edit Homework</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group text-center">
+            <button class="btn btn-outline-info" type="submit">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

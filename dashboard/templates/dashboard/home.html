@@ -1,0 +1,172 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  /* Apply background color to the entire screen */
+  body {
+    background-color: #4C516D;
+    color: white; /* Optional: To make text more readable */
+  }
+
+  .container {
+    color: white;
+    font: 20px cambria;
+    backgorund-color: #4C516D;
+  }
+
+  /* Apply color to the card body */
+  .card-body {
+    background-color: #b7b9c7;
+    color: #000; /* Optional: Text color for card body */
+    width: 350px;
+    height: 140px;
+  }
+
+  /* Style for card to make it stand out */
+  .card {
+    border: none;
+    margin: 20px;
+    width: 400px;
+    height: 400px;
+  }
+
+  .card:hover {
+    backgorund-color: #4C516D;
+  }
+
+  .card-img-top {
+    height: 200px;
+    object-fit: cover; /* Adjusts image to fit the container */
+  }
+
+  /* Optional: Change text color for headings inside card */
+  .card-title {
+    color: #333; /* Darker text color */
+  }
+</style>
+
+<section class="container text-center">
+  <h3>Welcome</h3>
+  <hr><br>
+
+  <div class="row">
+    <div class="col-md-4">
+      <a href="{% url 'notes'%}">
+        <div class="card">
+          <img class="card-img-top" src="{% static 'images/notes.jpg' %}" alt="Notes image">
+          <div class="card-body">
+            <h5 class="card-title">Notes</h5>
+            <p>Create Notes to refer them later.They are stored permanently until deleted.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a href="{% url 'homework' %}">
+        <div class="card">
+          <img class="card-img-top" src="{% static 'images/homework2.jpg' %}" alt="Homework image">
+          <div class="card-body">
+            <h5 class="card-title">Homework</h5>
+            <p>Add homeworks and assign them deadlines. They will be displayed prioritised by deadlines.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a href="{% url 'youtube' %}">
+        <div class="card">
+          <img class="card-img-top" src="{% static 'images/youtube2.jpg' %}" alt="Youtube image">
+          <div class="card-body">
+            <h5 class="card-title">Youtube</h5>
+            <p>Search Youtube and select your desired video to play it on youtube.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <br><br><br>
+
+  <div class="row">
+    <div class="col-md-4">
+      <a href="{% url 'todo' %}">
+        <div class="card">
+          <img class="card-img-top" src="{% static 'images/todo.jpg' %}" alt="To Do image">
+          <div class="card-body">
+            <h5 class="card-title">To Do</h5>
+            <p>Add your to-do lists for your day and remove them as you finish.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a href="{% url 'books' %}">
+        <div class="card">
+          <img class="card-img-top" src="{% static 'images/books.png' %}" alt="Books image">
+          <div class="card-body">
+            <h5 class="card-title">Books</h5>
+            <p>Browse books from a list of neatly organised book menu.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a href="{% url 'dictionary' %}">
+        <div class="card">
+          <img class="card-img-top" src="{% static 'images/dict.jpg' %}" alt="Dictionary image">
+          <div class="card-body">
+            <h5 class="card-title">Dictionary</h5>
+            <p>A vocabulary is troubling you? No problem, enter the word, and the meaning will be displayed.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <br><br><br>
+
+  <div class="row">
+    <div class="col-md-4">
+      <a href="{% url 'wiki' %}">
+        <div class="card">
+          <img class="card-img-top" src="{% static 'images/wiki.jpg' %}" alt="WikiPedia image">
+          <div class="card-body">
+            <h5 class="card-title">WikiPedia</h5>
+            <p>Homework and Assignments? Search wikipedia to get fast results.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a href="{% url 'conversion' %}">
+        <div class="card">
+          <img class="card-img-top" src="{% static 'images/conversion.jpg' %}" alt="Conversion image">
+          <div class="card-body">
+            <h5 class="card-title">Conversion</h5>
+            <p>Check out the conversion table, that helps you to convert measurements to more familiar ones of your choice.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a href="{% url 'chatbot' %}">
+        <div class="card">
+          <img class="card-img-top" src="{% static 'images/AI-Chatbots.jpg' %}" alt="AI Chatbot image">
+          <div class="card-body">
+            <h5 class="card-title">AI Chatbot</h5>
+            <p>Interact with an AI Chatbot to get instant help and responses.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</section>
+{% endblock content %}

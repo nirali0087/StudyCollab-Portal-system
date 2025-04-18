@@ -1,0 +1,67 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>
+    body {
+        background-color: #4C516D;
+    }
+    /* Overall container styling */
+    .container {
+        max-width: 600px; /* Limit max width for better readability */
+        margin: 80px auto; /* Center the container vertically and horizontally */
+        padding: 30px; /* Add padding inside the container */
+        background-color: #b7b9c7; /* White background for contrast */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+    }
+
+    /* Title styling */
+    h2 {
+        font-size: 2.5rem; /* Larger font size for the title */
+        color: black; /* Darker text color */
+        font: bold 40px cambria;
+        margin-bottom: 30px; /* Spacing below the title */
+        text-align: center; /* Center the title */
+    }
+
+    /* Button styling */
+    .btn {
+        width: 100%; /* Full-width button */
+        padding: 12px; /* Increased padding for better clickability */
+        font-size: 1.2rem; /* Larger font size for the button text */
+        background-color: black;
+        color: white;
+        font: 20px cambria;
+    }
+
+    /* Form styling */
+    .form-group {
+        margin-bottom: 20px; /* Spacing below each form group */
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 2rem; /* Adjust heading size for smaller screens */
+        }
+
+        .btn {
+            font-size: 1rem; /* Adjust button font size for smaller screens */
+        }
+    }
+</style>
+
+<div class="container">
+    <h2 class="text-center">Edit Note</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

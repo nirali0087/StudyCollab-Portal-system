@@ -1,0 +1,155 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #4C516D;
+    }
+    /* Container styling */
+    .container {
+        padding: 40px; /* Add padding around the container */
+        background-color: #b7b9c7; /* Light background color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+        margin-top: 20px; /* Space above the container */
+    }
+
+    /* Title and paragraph styling */
+    h2 {
+        font-size: 2rem; /* Larger font size for title */
+        color: black; /* Dark text color */
+        font: bold 40px cambria;
+        margin-bottom: 10px; /* Space below the title */
+    }
+
+    p {
+        font-size: 1.1rem; /* Slightly larger font size for paragraph */
+        color: #4C516D ; /* Muted text color */
+        font: bold 20px cambria;
+        margin-bottom: 30px; /* Space below the paragraph */
+    }
+
+    /* Form styling */
+    form {
+        margin-bottom: 30px; /* Space below the form */
+        font: 20px cambria;
+    }
+
+    /* Button styling */
+    .btn-danger {
+        padding: 10px 20px; /* Padding for buttons */
+        border-radius: 5px; /* Rounded corners */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+        Background-color: black;
+        border-color: black;
+    }
+
+    .btn-danger:hover {
+        background-color: #4C516D; /* Darker red on hover */
+        color: white; /* White text color on hover */
+        border-color: white;
+    }
+
+    /* Video list styling */
+    .list-group {
+        max-height: 500px; /* Set a maximum height for the video list */
+        overflow-y: auto; /* Enable vertical scrolling */
+        padding: 10px; /* Add padding inside the list */
+        border: 1px solid #b7b9c7; /* Add border for better visibility */
+        border-radius: 5px; /* Rounded corners */
+    }
+
+    .list-group-item {
+        transition: transform 0.3s; /* Smooth transition */
+        border-radius: 5px; /* Rounded corners */
+    }
+
+    .list-group-item:hover {
+        transform: scale(1.02); /* Slightly enlarge on hover */
+        background-color: #4C516D; /* Light gray background on hover */
+        color: white;
+    }
+
+    /* Video player styling */
+    #video-player {
+        display: none; /* Initially hidden */
+        margin-top: 10px; /* Space above the video player */
+        border-radius: 10px; /* Rounded corners */
+        overflow: hidden; /* Ensure no overflow */
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px; /* Reduce padding for smaller screens */
+        }
+
+        h2 {
+            font-size: 1.5rem; /* Smaller font size for title */
+        }
+
+        p {
+            font-size: 1rem; /* Smaller font size for paragraph */
+        }
+
+        #player {
+            height: 300px; /* Smaller height for video player */
+        }
+    }
+</style>
+
+<section class="container">
+    <h2 class="text-center">Search Videos on YouTube</h2>
+    <p class="text-center">Search for videos and select any video to open on YouTube</p>
+    <form action="" method="post" class="text-center">
+        {% csrf_token %}
+        {{ form }}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form><br>
+
+    <div class="row">
+        <!-- Video List -->
+        <div class="col-md-4">
+            <div class="list-group">
+                {% for result in results %}
+                <a href="#" class="list-group-item list-group-item-action" onclick="playVideo('{{ result.link }}')">
+                    <div class="col-md-10">
+                        <img src="{{ result.thumbnail }}" class="card-img" alt="Video Thumbnail">
+                    </div>
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ result.title }}</h5>
+                    </div>
+                    <p class="mb-1">
+                        <small class="text-muted">{{ result.channel }}</small><br>
+                        <small class="text-muted">{{ result.duration }}</small> | 
+                        <small class="text-muted">{{ result.views }}</small> | 
+                        <small class="text-muted">{{ result.published }}</small>
+                    </p>
+                    <small class="text-muted">{{ result.description }}</small>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Video Player -->
+        <div class="col-md-8">
+            <div id="video-player">
+                <iframe id="player" width="100%" height="500" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function playVideo(url) {
+    var videoId = url.split('v=')[1].split('&')[0];
+    var player = document.getElementById('player');
+    var videoPlayer = document.getElementById('video-player');
+    
+    player.src = 'https://www.youtube.com/embed/' + videoId;
+    videoPlayer.style.display = 'block';
+}
+</script>
+{% endblock content %}

@@ -1,0 +1,166 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background-color: #4C516D;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 5px auto;
+        padding: 20px;
+        background-color: #b7b9c7;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: black;
+        font: bold 40px cambria;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 1.2rem;
+        color: #4C516D ;
+        font: bold 20px cambria;
+        margin-bottom: 30px;
+    }
+
+    .form-control {
+        padding: 10px;
+        font-size: 1.1rem;
+        color: black;
+        font: bold 20px cambria;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        margin-bottom: 20px;
+    }
+
+    .btn-danger {
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        background-color: black;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-danger:hover {
+        background-color: black;
+    }
+
+    .scroll-container {
+        max-height: 600px; /* Adjust the height as needed */
+        width: 100%;
+        overflow-y: auto;
+        margin-top: 20px;
+        padding-right: 10px; /* To avoid content hiding behind the scrollbar */
+    }
+
+    .card {
+        border: none;
+        width: 100% !important;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+        background-color: #4C516D;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        {% comment %} display: flex;
+        padding: 20px; {% endcomment %}
+        {% comment %} background-color: #fff; {% endcomment %}
+    }
+
+    .row {
+        width: 100%;
+        display: flex;
+
+    }
+    .img-fluid {
+        width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain ;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    h3, h5 {
+        color:black;
+        font: bold 25px cambria;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    h6 {
+        color: black;
+        font: 20px cambria;
+        margin-bottom: 10px;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+</style>
+
+<section class='text-center container'>
+    <h2>Search books and browse your favorite</h2>
+    <p>Just enter the search query to obtain the results</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form><br>
+
+    <div class="scroll-container">
+        {% for result in results %}
+        <a href="{{ result.preview }}" target="_blank">
+            <div class="card">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img class="img-fluid" src="{{ result.thumbnail }}" alt="">
+                        </div>
+                        <div class="col-md-9 text-left">
+                            <h3>{{ result.title }}</h3>
+                            {% if result.subtitle %}
+                            <h5><u>{{ result.subtitle }}</u></h5>
+                            {% endif %}
+                            {% if result.description %}
+                            <h6>{{ result.description }}</h6>
+                            {% endif %}
+                            {% if result.categories %}
+                            <h6><b>Category:</b>
+                                {% for category in result.categories %}
+                                {{ category }}
+                                {% endfor %}
+                            </h6>
+                            {% endif %}
+                            {% if result.count %}
+                            <h6><b>Pages:</b> {{ result.count }}</h6>
+                            {% endif %}
+                            {% if result.rating %}
+                            <h6><b>Rating:</b> {{ result.rating }}</h6>
+                            {% endif %}
+                        </div>
+                    </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock content %}

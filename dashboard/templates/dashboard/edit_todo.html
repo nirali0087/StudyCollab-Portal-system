@@ -1,0 +1,81 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #4C516D;
+    }
+    /* Overall container styling */
+    .container {
+        padding: 40px; /* Add padding around the container */
+        background-color: #b7b9c7; /* Light background color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+        margin-top: 20px; /* Space above the container */
+    }
+
+    /* Title styling */
+    h2 {
+        font-size: 2rem; /* Larger font size for title */
+        color: black; /* Dark text color */
+        font: bold 40px cambria;
+        margin-bottom: 20px; /* Space below the title */
+    }
+
+    /* Form styling */
+    form {
+        margin-top: 20px; /* Space above the form */
+    }
+
+    /* Input and button styling */
+    .form-control {
+        border-radius: 5px; /* Rounded corners for input */
+        border: 1px solid #ced4da; /* Border color */
+        transition: border-color 0.3s; /* Smooth transition */
+    }
+
+    .form-control:focus {
+        border-color: #80bdff; /* Border color on focus */
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Shadow on focus */
+    }
+
+    /* Button styling */
+    .btn-outline-info {
+        padding: 10px 20px; /* Padding for buttons */
+        border-radius: 5px; /* Rounded corners */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+        background-color: black;
+        color: white;
+        margin-top: 15px; /* Space above the button */
+    }
+
+    .btn-outline-info:hover {
+        background-color: #4C516D ; /* Background color on hover */
+        color: white; /* Text color on hover */
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px; /* Reduce padding for smaller screens */
+        }
+
+        h2 {
+            font-size: 1.5rem; /* Smaller font size for title */
+        }
+    }
+</style>
+
+<div class="container">
+    <h2 class="text-center">Edit Todo</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Update Todo</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

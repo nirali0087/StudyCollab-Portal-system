@@ -1,0 +1,128 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background-color: #4C516D;
+    }
+    /* Overall section styling */
+    section {
+        padding: 40px 20px; /* Add padding around the section */
+        background-color: #b7b9c7; /* Light background color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+        margin-top: 40px; /* Space above the section */
+    }
+
+    /* Title styling */
+    h2 {
+        font-size: 2.5rem; /* Larger font size for the main title */
+        color: black; /* Darker text color */
+        font: bold 40px cambria;
+        margin-bottom: 20px; /* Space below the title */
+    }
+
+    /* Subtitle and instructions styling */
+    p {
+        font-size: 1.2rem; /* Slightly larger font for instructions */
+        color: #555; /* Medium gray color for contrast */
+        margin-bottom: 30px; /* Space below the paragraph */
+        font: 20px cambria;
+    }
+
+    /* Form styling */
+    .form-group {
+        margin-bottom: 20px; /* Spacing below each form group */
+    }
+
+    .btn-danger {
+        padding: 12px 20px; /* Increase padding for the button */
+        font-size: 1.2rem; /* Larger font size for better visibility */
+        transition: background-color 0.3s; /* Smooth transition for hover effect */
+        background-color: black;
+        border-color: black;
+
+    }
+
+    .btn-danger:hover {
+        background-color:#4C516D; /* Darker red on hover */
+        color: white; /* White text color on hover */
+    }
+
+    /* Content section styling */
+    .content-section {
+        margin-top: 40px; /* Space above the content section */
+        padding: 20px; /* Padding around content */
+        background-color: #ffffff; /* White background for the content */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for content */
+        font: 20px cambria;
+    }
+
+    /* Custom header styling */
+    .custom-header {
+        margin-bottom: 20px; /* Space below the header */
+    }
+
+    /* Definition and example styling */
+    h4 {
+        color: #007bff; /* Blue color for definition and example */
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 2rem; /* Adjust heading size for smaller screens */
+        }
+
+        p {
+            font-size: 1rem; /* Adjust paragraph size for smaller screens */
+        }
+
+        .btn-danger {
+            font-size: 1rem; /* Adjust button font size for smaller screens */
+        }
+    }
+</style>
+
+<section class='text-center container'>
+    <h2>Dictionary</h2>
+    <p>Enter any word to get the phonetics, definition, and an example for the word</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form}}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form><br>
+
+    <div class="content-section p-0 mt-5">
+        {% if input %}
+            <div class="custom-header">
+                <h2>{{input}}</h2>
+                <h6>{{phonetics}}</h6>
+                <audio id="player" src="{{audio}}"></audio>
+                <div>
+                    <a onclick="document.getElementById('player').play()">
+                        <span class="fa fa-volume-up fa-2x"></span>
+                    </a>    
+                </div>
+            </div>
+
+            <hr class="p-0 m-0">
+
+            <p class="float-left">
+                <h4>Definition: {{definition}}</h4>
+                <h4>Example: {{example}}</h4>
+            </p>
+
+            <div class="synonyms">
+                {% comment %} Synonyms: 
+                {% for synonym in synonyms %}
+                    {{ synonym }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}  {% endcomment %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock content %}
