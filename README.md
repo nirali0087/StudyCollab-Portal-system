@@ -52,3 +52,4 @@ Frontend: HTML, CSS, JavaScript
 Database: SQLite (default for Django projects)​
 _____________________________________________________________________________________________________________________________
 # 📁 Project Structure
+![image](https://github.com/user-attachments/assets/a4398cb0-51be-4a46-bf26-781aca641205)
